@@ -1,3 +1,9 @@
+new p5();
+
+function setup() {
+  createCanvas(400, 400);	
+}
+
 var xPositions = [200];
 var yPositions = [0];
 var colors = [color(191, 69, 191),
@@ -45,4 +51,3 @@ mouseClicked = function () {
     xPositions.push(mouseX);
     yPositions.push(mouseY);
 };
-println("15 % 11: " + 15 % 11);
