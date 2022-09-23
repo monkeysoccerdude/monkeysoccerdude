@@ -6,7 +6,7 @@
     </head>
     <body>
    <h1>msd</h1>
-   <code>
+   <pre>
        var paintBrush = {
     x: 210,
     y: 208,
@@ -23,7 +23,167 @@ mouseMoved = function() {
     paintBrush.y  = mouseY;
     paintCanvas();
 
-       };</code>
+       };
+       
+//the Ground
+noStroke();
+background(0, 255, 255);
+fill(255, 166, 0);
+rect(100,-1,200,601);
+var X=mouseX,Y=300,score=0,time2=0,scoins=0;
+imageMode(CENTER);
+var drawWinston = function(){
+    image(getImage("creatures/Winston"),X,Y,75,75);
+};
+var Blocksx = [],Blocksy = [];
+var Fastblocksx = [],Fastblocksy = [];
+var Coinsx = [],Coinsy = [],SCoinsx = [],SCoinsy = [];
+var time=0,coin=0,time3=0,time4=0;
+//you need to avoid the blocks and collect the coins!
+var drawBlock = function(){
+    fill(0, 0, 255);
+    for(var i=0;i<Blocksx.length;i++){
+        rect(Blocksx[i],Blocksy[i],30,30);
+    }
+    for(var i=0;i<Fastblocksx.length;i++){
+        rect(Fastblocksx[i],Fastblocksy[i],30,30);
+    }
+};
+var drawCoin = function(){
+    fill(255, 234, 0);
+    for(var i=0;i<Coinsx.length;i++){
+        ellipse(Coinsx[i],Coinsy[i],30,30);
+    }
+    for(var i=0;i<SCoinsx.length;i++){
+        fill(255, 217, 0);
+        ellipse(SCoinsx[i],SCoinsy[i],40,40);
+        fill(50, 153, 0);
+        text("523",SCoinsx[i]-20,SCoinsy[i]-10,40,40);
+    }
+};
+var IfWinstonIsDead = function(){
+    for(var i=0;i<Blocksx.length;i++){
+        if(X>=Blocksx[i]-15&&X<=Blocksx[i]+40&&Y>=Blocksy[i]-10&&Y<=Blocksy[i]+40){
+            return true;
+        }
+        if(X<93||X>310){
+            return true;
+        }
+    }
+    for(var i=0;i<Fastblocksx.length;i++){
+        if(X>=Fastblocksx[i]-10&&X<=Fastblocksx[i]+40&&Y>=Fastblocksy[i]-10&&Y<=Fastblocksy[i]+40){
+            return true;
+        }
+        if(X<90||X>310){
+            return true;
+        }
+    }
+    return false;
+};
+var IfWinstonGetsCoin = function(){
+    var ans = 0;
+    for(var i=0;i<Coinsx.length;i++){
+        if(X>=Coinsx[i]-28&&X<=Coinsx[i]+50&&Y>=Coinsy[i]-20&&Y<=Coinsy[i]+50){
+            Coinsx[i]=-3;
+            ans++;
+        }
+    }
+    for(var i=0;i<SCoinsx.length;i++){
+        if(X>=SCoinsx[i]-10&&X<=SCoinsx[i]+40&&Y>=SCoinsy[i]-10&&Y<=SCoinsy[i]+40){
+            SCoinsx[i]=-50;
+            scoins++;
+        }
+    }
+    return ans;
+};
+var dead=false;
+draw = function() {
+    noStroke();
+    background(255, 0, 225);
+    fill(0, 26, 255);
+    rect(100,-1,200,401);
+    if(time>=40+random(-5,5)){
+        time-=72;
+        Blocksx.push(random(100,270));
+        Blocksy.push(6);
+    }
+    if(time2>=60+random(0,10)){
+        time2-=60;
+        Coinsx.push(random(100,270));
+        Coinsy.push(0);
+    }
+    if(time3>=80&&score>3000){
+        time3=0;
+        Fastblocksx.push(random(100,270));
+        Fastblocksy.push(0);
+    }
+    if(time4>=500+random(0,10)){
+        time4-=500;
+        SCoinsx.push(random(100,270));
+        SCoinsy.push(0);
+    }
+    for(var i=0;i<Blocksx.length;i++){
+        Blocksy[i]+=3+score/600;
+    }
+    for(var i=0;i<Coinsx.length;i++){
+        Coinsy[i]+=3+score/600;
+    }
+    for(var i=0;i<Fastblocksx.length;i++){
+        Fastblocksy[i]+=3+score/300;
+    }
+    for(var i=0;i<SCoinsx.length;i++){
+        SCoinsy[i]+=5+score/600;
+    }
+    if(dead===false){
+        dead=IfWinstonIsDead();
+    }
+    if(dead){
+        textSize(60);
+        fill(255, 0, 0);
+        text("GameOver",50,200);
+        textSize(20);
+        if(score+coin*25+scoins*500<=3000){
+            text("Your Level:Normal Wisnton",70,235);
+        }
+        else if(score+coin*25+scoins*500<=5000){
+            text("Your Level:Excellent Wisnton",70,235);
+        }
+        else if(score+coin*25+scoins*500<=8000){
+            text("Your Level:Epic Wisnton",95,235);
+        }
+        else if(score+coin*25+scoins*500<=15000){
+            text("Your Level:Lengendary Wisnton",60,235);
+        }
+        else{
+            text("Your Level:Impossible",70,235);
+        }
+        if(coin>=50){
+            text("Coin Master",142,259);
+        }
+        else if(coin>=30){
+            text("Coin Collecter",127,259);
+        }
+    }
+    else{
+        coin+=IfWinstonGetsCoin();
+        X=mouseX;
+        drawWinston();
+        drawBlock();
+        drawCoin();
+    }
+    fill(255, 221, 0);
+    textSize(20);
+    text("your score:"+(score+coin*25+scoins*500),10,25);
+    text("your coins:"+coin,10,45);
+    time++;
+    time2++;
+    time3++;
+    time4++;
+    if(dead===false){
+        score++;
+    }
+};
+</pre>
         <p>
    shut your rucking race runkle-rucker! <br>
    unrty <br>
